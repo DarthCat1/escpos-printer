@@ -1,4 +1,4 @@
-package com.resonance.escpos;
+package com.resonance.printer_protocols;
 
 public interface EscPosConst {
 
