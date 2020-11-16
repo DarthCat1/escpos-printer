@@ -1,19 +1,21 @@
 package com.resonance.printers;
 
+import com.resonance.printer_protocols.PrinterProtocol;
+import com.resonance.printer_protocols.PrintingStyle;
+
 import java.io.*;
 
 public class PrinterUSB implements Printer {
 
     private String port;
     private int charPerLine;
-    ByteArrayOutputStream printerBuffer;
+    private ByteArrayOutputStream printerBuffer;
+    private PrinterProtocol protocol;
 
-
-
-
-    public PrinterUSB(String port, int charPerLine) {
+    public PrinterUSB(String port, int charPerLine, PrinterProtocol protocol) {
         this.port = port;
         this.charPerLine = charPerLine;
+        this.protocol = protocol;
         printerBuffer = new ByteArrayOutputStream();
     }
 
@@ -29,6 +31,15 @@ public class PrinterUSB implements Printer {
         printerBuffer.write(bytes);
     }
 
+    public void writeToBuffer (String text) throws IOException {
+        printerBuffer.write(text.getBytes(protocol.getCharsetName()));
+    }
+
+    public void writeToBuffer (PrintingStyle style,  String text) throws IOException {
+        printerBuffer.write(style.getConfigBytes());
+        printerBuffer.write(text.getBytes(protocol.getCharsetName()));
+    }
+
     public void printFromBuffer() throws IOException {
         OutputStream outputStream = new FileOutputStream(port);
         outputStream.write(printerBuffer.toByteArray());
@@ -39,6 +50,5 @@ public class PrinterUSB implements Printer {
     public void resetBuffer () {
         printerBuffer.reset();
     }
-
 
 }
