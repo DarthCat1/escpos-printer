@@ -1,10 +1,13 @@
-package com.resonance.printer_protocols;
+package com.resonance.printer_protocols.EscPos;
+
+import com.resonance.printer_protocols.EscPos.EscPosConst;
+import com.resonance.printer_protocols.PrintingStyle;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PrintingStyleEscPOS implements PrintingStyle, EscPosConst{
+public class PrintingStyleEscPos implements PrintingStyle, EscPosConst {
     //  default style include left alignment, not bold, CharFont A
     private byte selectedAlignment;
     private byte selectedCharFonts;
@@ -12,7 +15,7 @@ public class PrintingStyleEscPOS implements PrintingStyle, EscPosConst{
     Map <Alignment, Byte> alignmentMap;
     Map <CharFonts, Byte> charFontsMap;
 
-    public PrintingStyleEscPOS() {
+    public PrintingStyleEscPos() {
         alignmentMap = new HashMap<>();
         alignmentMap.put(Alignment.LEFT, (byte) 0);
         alignmentMap.put(Alignment.CENTER, (byte) 1);
