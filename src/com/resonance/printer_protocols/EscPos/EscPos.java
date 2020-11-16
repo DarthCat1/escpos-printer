@@ -4,13 +4,25 @@ import com.resonance.printer_protocols.Barcode;
 import com.resonance.printer_protocols.CharacterCodeTable;
 import com.resonance.printer_protocols.PrinterProtocol;
 
+import java.util.HashMap;
+
 public class EscPos implements PrinterProtocol, EscPosConst {
+
+    private static final HashMap<PrinterProtocol.CutMode, Byte> CUT_MODE_HASH_MAP;
+
+    static {
+        CUT_MODE_HASH_MAP = new HashMap<>();
+        CUT_MODE_HASH_MAP.put(PrinterProtocol.CutMode.FULL, (byte) 0x67);
+        CUT_MODE_HASH_MAP.put(PrinterProtocol.CutMode.PART, (byte) 0);
+    }
 
     private Barcode barcode;
     private CharacterCodeTableEscPos characterCodeTableEscPos;
+    private CutMode cutMode;
 
     public EscPos () {
         characterCodeTableEscPos = new CharacterCodeTableEscPos();
+        cutMode = CutMode.PART;
     }
 
     public byte [] setCharacterCodeTable(CharacterCodeTable characterCodeTable) {
@@ -26,22 +38,12 @@ public class EscPos implements PrinterProtocol, EscPosConst {
         return characterCodeTableEscPos.getCurrentCharacterCodeTable().charsetName;
     }
 
-    public enum CutMode {
-        FULL(67),   //  GIANT-100, GIANT-150 and GIANT PRO does not support ‘Full-Cut’ function.
-        PART(0);
-        public int value;
-
-        CutMode(int value) {
-            this.value = value;
-        }
-    }
-
     public byte [] cut(CutMode mode) {
-        return new byte[] {GS, 0x56, (byte)mode.value};
+        return new byte[] {GS, 0x56, CUT_MODE_HASH_MAP.get(mode)};
     }
 
     public byte [] cut () {
-        return new byte[] {GS, 0x56, (byte)CutMode.PART.value};
+        return new byte[] {GS, 0x56, CUT_MODE_HASH_MAP.get(cutMode)};
     }
 
     public byte [] feed (int linesCount) {
