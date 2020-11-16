@@ -1,15 +1,29 @@
-package com.resonance.printer_protocols;
+package com.resonance.printer_protocols.EscPos;
 
-import java.io.*;
+import com.resonance.printer_protocols.Barcode;
+import com.resonance.printer_protocols.CharacterCodeTable;
+import com.resonance.printer_protocols.PrinterProtocol;
 
-public class EscPos implements PrinterProtocol,EscPosConst{
+public class EscPos implements PrinterProtocol, EscPosConst {
+
+    private Barcode barcode;
+    private CharacterCodeTableEscPos characterCodeTableEscPos;
 
     public EscPos () {
-
+        characterCodeTableEscPos = new CharacterCodeTableEscPos();
     }
 
     public byte [] setCharacterCodeTable(CharacterCodeTable characterCodeTable) {
-        return  new byte[]{ESC, 0x74, (byte) characterCodeTable.value};
+        characterCodeTableEscPos.setCurrentCharacterCodeTable(characterCodeTable);
+        return new byte[]{ESC, 0x74, characterCodeTableEscPos.getCurrentCharacterCodeTableByte()};
+    }
+
+    public Barcode getBarcode() {
+        return barcode == null ? barcode = new BarcodeEscPos() : barcode;
+    }
+
+    public String getCharsetName() {
+        return characterCodeTableEscPos.getCurrentCharacterCodeTable().charsetName;
     }
 
     public enum CutMode {
