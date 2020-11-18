@@ -8,6 +8,7 @@ public interface PrinterProtocol {
     byte [] initConnection();
     String getCharsetName();
     Barcode getBarcode();
+    QrCode getQrCode();
 
     enum CutMode {
         FULL(),   //  GIANT-100, GIANT-150 and GIANT PRO does not support ‘Full-Cut’ function.
