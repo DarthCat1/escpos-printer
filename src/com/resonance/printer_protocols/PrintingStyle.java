@@ -1,7 +1,5 @@
 package com.resonance.printer_protocols;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public interface PrintingStyle {
     byte[] getConfigBytes();
