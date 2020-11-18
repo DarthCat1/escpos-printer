@@ -3,6 +3,7 @@ package com.resonance.printer_protocols.EscPos;
 import com.resonance.printer_protocols.Barcode;
 import com.resonance.printer_protocols.CharacterCodeTable;
 import com.resonance.printer_protocols.PrinterProtocol;
+import com.resonance.printer_protocols.QrCode;
 
 import java.util.HashMap;
 
@@ -16,7 +17,6 @@ public class EscPos implements PrinterProtocol, EscPosConst {
         CUT_MODE_HASH_MAP.put(PrinterProtocol.CutMode.PART, (byte) 0);
     }
 
-    private Barcode barcode;
     private CharacterCodeTableEscPos characterCodeTableEscPos;
     private CutMode cutMode;
 
@@ -31,7 +31,11 @@ public class EscPos implements PrinterProtocol, EscPosConst {
     }
 
     public Barcode getBarcode() {
-        return barcode == null ? barcode = new BarcodeEscPos() : barcode;
+        return new BarcodeEscPos();
+    }
+
+    public QrCode getQrCode() {
+        return new QrCodeEscPos();
     }
 
     public String getCharsetName() {
