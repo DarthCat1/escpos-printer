@@ -48,8 +48,7 @@ public class BarcodeEscPos implements EscPosConst, Barcode{
 
     }
 
-
-    public BarcodeEscPos () {
+    BarcodeEscPos () {
         reset();
     }
 
