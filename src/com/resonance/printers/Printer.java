@@ -55,6 +55,10 @@ public class Printer {
         printerBuffer.write(text.getBytes(protocol.getCharsetName()));
     }
 
+    public void writeToBuffer (byte b) {
+        printerBuffer.write(b);
+    }
+
     public void printFromBuffer() throws IOException, SerialPortException {
         if (connector instanceof ConnectorUsb) {
             OutputStream outputStream = new FileOutputStream(connector.getPathway());
