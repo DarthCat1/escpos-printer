@@ -1,5 +1,6 @@
 package com.resonance.printer_protocols.EscPos;
 
+import com.resonance.printer_protocols.IllegalImageSizeException;
 import com.resonance.printer_protocols.PrintingImage;
 
 import java.awt.*;
@@ -12,10 +13,20 @@ import java.io.ByteArrayOutputStream;
     private BufferedImage binaryImage;
     private ByteArrayOutputStream imageBytesChain;
 
-     PrintingImageEscPos(BufferedImage image) {
+     PrintingImageEscPos(BufferedImage image) throws IllegalImageSizeException {
         imageBytesChain = new ByteArrayOutputStream();
-         setImage(image);
+        setImage(image);
     }
+
+     @Override
+     public void setImage(BufferedImage image) throws IllegalImageSizeException {
+         if (!isImageValid(image)) {
+             throw new IllegalImageSizeException("image width, image height and (width + 7)/8) * height should take no more 2 bytes");
+         }
+         imageBytesChain.reset();
+         binaryImage = createBinaryImage(image);
+         this.setImageBytesChain();
+     }
 
     void setImageBytesChain() {
         for (int y = 0; y < binaryImage.getHeight(); ++y) {
@@ -29,13 +40,6 @@ import java.io.ByteArrayOutputStream;
                 imageBytesChain.write(currentByte);
             }
         }
-    }
-
-    @Override
-    public void setImage(BufferedImage image) {
-        imageBytesChain.reset();
-        binaryImage = createBinaryImage(image);
-        this.setImageBytesChain();
     }
 
     @Override
@@ -57,6 +61,16 @@ import java.io.ByteArrayOutputStream;
          g2d.drawImage(inputImage, 0, 0, null);
          // Store the resulting image using the PNG format.
          return binaryImage;
+     }
+
+     boolean isImageValid (BufferedImage image) {
+         final int maxTwoBytesValue = 65535;
+         if (((image.getWidth() + 7)/8) * image.getHeight() > maxTwoBytesValue - 10)
+             return false;
+         if (image.getWidth() > maxTwoBytesValue  |  image.getHeight() > maxTwoBytesValue)
+             return false;
+
+         return true;
      }
 
 }

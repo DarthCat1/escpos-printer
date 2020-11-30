@@ -14,7 +14,7 @@ public interface PrinterProtocol {
     QrCode getQrCode();
     byte[] printStoredImage();
     byte[] storeImage (PrintingImage printingImage) throws IOException;
-    PrintingImage getPrintingImage(BufferedImage image);
+    PrintingImage getPrintingImage(BufferedImage image) throws IllegalImageSizeException;
 
     enum CutMode {
         FULL(),   //  GIANT-100, GIANT-150 and GIANT PRO does not support ‘Full-Cut’ function.

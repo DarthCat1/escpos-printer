@@ -106,7 +106,7 @@ public class EscPos implements PrinterProtocol, EscPosConst {
     }
 
     @Override
-    public PrintingImage getPrintingImage(BufferedImage image) {
+    public PrintingImage getPrintingImage(BufferedImage image) throws IllegalImageSizeException{
         return new PrintingImageEscPos(image);
     }
 
