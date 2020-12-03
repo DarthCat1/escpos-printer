@@ -8,6 +8,6 @@ import java.io.IOException;
 
 public interface Connector {
     String getPathway();
-    void setPathway(String pathway);
+    void setPathway(String pathway) throws IllegalPrintServiceNameException;
     void printBuffer(byte[] buffer) throws PrintException, IOException, SerialPortException;
 }
