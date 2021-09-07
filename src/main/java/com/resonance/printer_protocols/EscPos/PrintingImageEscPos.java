@@ -67,10 +67,7 @@ import java.io.ByteArrayOutputStream;
          final int maxTwoBytesValue = 65535;
          if (((image.getWidth() + 7)/8) * image.getHeight() > maxTwoBytesValue - 10)
              return false;
-         if (image.getWidth() > maxTwoBytesValue  |  image.getHeight() > maxTwoBytesValue)
-             return false;
-
-         return true;
+         return !(image.getWidth() > maxTwoBytesValue | image.getHeight() > maxTwoBytesValue);
      }
 
 }
